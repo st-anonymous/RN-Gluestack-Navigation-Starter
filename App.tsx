@@ -1,20 +1,27 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import "@/global.css";
+import { StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { AppNavigator } from '@/app/navigations';
+import { persistor, store } from "@/store/store";
+import { Provider } from 'react-redux';
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { PersistGate } from 'redux-persist/integration/react';
+import { GluestackUIProvider } from './components/ui/gluestack-ui-provider';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <GestureHandlerRootView>
+        <GluestackUIProvider mode='light'>
+          <PersistGate loading={null} persistor={persistor}>
+            <StatusBar style="auto" />
+            <NavigationContainer>
+              <AppNavigator />
+            </NavigationContainer>
+          </PersistGate>
+        </GluestackUIProvider>
+      </GestureHandlerRootView>
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
